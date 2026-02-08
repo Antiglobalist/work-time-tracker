@@ -38,6 +38,15 @@ public partial class TimerViewModel : ObservableObject, IDisposable
     private string _lastActivityTime = "--:--";
 
     [ObservableProperty]
+    private string _highFocusTime = "00:00";
+
+    [ObservableProperty]
+    private string _mediumFocusTime = "00:00";
+
+    [ObservableProperty]
+    private string _effectiveWorkTime = "00:00";
+
+    [ObservableProperty]
     private bool _showEndTime = false;
 
     [ObservableProperty]
@@ -105,8 +114,16 @@ public partial class TimerViewModel : ObservableObject, IDisposable
 
         var activeTime = TimeSpan.Zero;
         var inactiveTime = TimeSpan.Zero;
+        var highFocus = TimeSpan.Zero;
+        var mediumFocus = TimeSpan.Zero;
         DateTime? firstActivityStart = null;
         DateTime? lastActivityEnd = null;
+        var thresholdMinutes = _settingsService.Settings.HighFocusThresholdMinutes;
+        if (thresholdMinutes <= 0)
+            thresholdMinutes = 60;
+        var highFocusThreshold = TimeSpan.FromMinutes(thresholdMinutes);
+        var highFocusWorkPercent = Math.Clamp(_settingsService.Settings.HighFocusWorkPercent, 0, 100);
+        var mediumFocusWorkPercent = Math.Clamp(_settingsService.Settings.MediumFocusWorkPercent, 0, 100);
 
         foreach (var s in sessions)
         {
@@ -117,6 +134,10 @@ public partial class TimerViewModel : ObservableObject, IDisposable
             if (s.Type == SessionType.Activity)
             {
                 activeTime += duration;
+                if (duration >= highFocusThreshold)
+                    highFocus += duration;
+                else
+                    mediumFocus += duration;
 
                 // Track first activity start
                 if (!firstActivityStart.HasValue || s.StartTime < firstActivityStart.Value)
@@ -135,6 +156,12 @@ public partial class TimerViewModel : ObservableObject, IDisposable
 
         TotalActiveTime = _localizationService.FormatHoursMinutes(activeTime);
         TotalInactiveTime = _localizationService.FormatHoursMinutes(inactiveTime);
+        HighFocusTime = _localizationService.FormatHoursMinutes(highFocus);
+        MediumFocusTime = _localizationService.FormatHoursMinutes(mediumFocus);
+        var effectiveSeconds =
+            (highFocus.TotalSeconds * highFocusWorkPercent / 100.0) +
+            (mediumFocus.TotalSeconds * mediumFocusWorkPercent / 100.0);
+        EffectiveWorkTime = _localizationService.FormatHoursMinutes(TimeSpan.FromSeconds(effectiveSeconds));
         LastActivity = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
         FirstActivityTime = firstActivityStart?.ToString("HH:mm") ?? "--:--";
         LastActivityTime = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
@@ -222,4 +249,3 @@ public class SessionDisplayItem
         }
     }
 }
-

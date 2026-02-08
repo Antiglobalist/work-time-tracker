@@ -37,9 +37,20 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private int _selectedWorkDayStartIndex;
 
+    [ObservableProperty]
+    private int _selectedHighFocusThresholdIndex;
+
+    [ObservableProperty]
+    private int _selectedHighFocusWorkPercentIndex;
+
+    [ObservableProperty]
+    private int _selectedMediumFocusWorkPercentIndex;
+
     public ObservableCollection<InactivityTimeoutOption> TimeoutOptions { get; } = new();
     public ObservableCollection<LanguageOption> LanguageOptions { get; } = new();
     public ObservableCollection<WorkDayStartOption> WorkDayStartOptions { get; } = new();
+    public ObservableCollection<HighFocusThresholdOption> HighFocusThresholdOptions { get; } = new();
+    public ObservableCollection<FocusEfficiencyOption> FocusEfficiencyOptions { get; } = new();
 
     public SettingsViewModel(ISettingsService settingsService, ILocalizationService localizationService)
     {
@@ -50,6 +61,8 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
         BuildTimeoutOptions();
         BuildLanguageOptions();
         BuildWorkDayStartOptions();
+        BuildHighFocusThresholdOptions();
+        BuildFocusEfficiencyOptions();
         LoadSettings();
     }
 
@@ -78,6 +91,14 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             .Select((o, i) => new { o.Hour, i })
             .FirstOrDefault(x => x.Hour == s.WorkDayStartHour)?.i ?? 0;
         if (SelectedWorkDayStartIndex < 0) SelectedWorkDayStartIndex = 0; // default 0:00
+
+        SelectedHighFocusThresholdIndex = HighFocusThresholdOptions
+            .Select((o, i) => new { o.Minutes, i })
+            .FirstOrDefault(x => x.Minutes == s.HighFocusThresholdMinutes)?.i ?? 1;
+        if (SelectedHighFocusThresholdIndex < 0) SelectedHighFocusThresholdIndex = 1; // default 60 min
+
+        SelectedHighFocusWorkPercentIndex = FindClosestFocusEfficiencyIndex(s.HighFocusWorkPercent, 95);
+        SelectedMediumFocusWorkPercentIndex = FindClosestFocusEfficiencyIndex(s.MediumFocusWorkPercent, 85);
     }
 
     [RelayCommand]
@@ -101,6 +122,20 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             SelectedWorkDayStartIndex = 0;
 
         s.WorkDayStartHour = WorkDayStartOptions[SelectedWorkDayStartIndex].Hour;
+
+        if (SelectedHighFocusThresholdIndex < 0 || SelectedHighFocusThresholdIndex >= HighFocusThresholdOptions.Count)
+            SelectedHighFocusThresholdIndex = 1;
+
+        s.HighFocusThresholdMinutes = HighFocusThresholdOptions[SelectedHighFocusThresholdIndex].Minutes;
+
+        if (SelectedHighFocusWorkPercentIndex < 0 || SelectedHighFocusWorkPercentIndex >= FocusEfficiencyOptions.Count)
+            SelectedHighFocusWorkPercentIndex = FindClosestFocusEfficiencyIndex(95, 95);
+
+        if (SelectedMediumFocusWorkPercentIndex < 0 || SelectedMediumFocusWorkPercentIndex >= FocusEfficiencyOptions.Count)
+            SelectedMediumFocusWorkPercentIndex = FindClosestFocusEfficiencyIndex(85, 85);
+
+        s.HighFocusWorkPercent = FocusEfficiencyOptions[SelectedHighFocusWorkPercentIndex].Percent;
+        s.MediumFocusWorkPercent = FocusEfficiencyOptions[SelectedMediumFocusWorkPercentIndex].Percent;
 
         // Update the static helper with the new setting
         WorkDayHelper.WorkDayStartHour = s.WorkDayStartHour;
@@ -193,10 +228,49 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
         }
     }
 
+    private void BuildHighFocusThresholdOptions()
+    {
+        HighFocusThresholdOptions.Clear();
+        var min = _localizationService["MinuteShort"];
+        var hour = _localizationService["HourShort"];
+        HighFocusThresholdOptions.Add(new HighFocusThresholdOption(30, $"30 {min}"));
+        HighFocusThresholdOptions.Add(new HighFocusThresholdOption(60, $"1 {hour}"));
+        HighFocusThresholdOptions.Add(new HighFocusThresholdOption(120, $"2 {hour}"));
+        HighFocusThresholdOptions.Add(new HighFocusThresholdOption(180, $"3 {hour}"));
+    }
+
+    private void BuildFocusEfficiencyOptions()
+    {
+        FocusEfficiencyOptions.Clear();
+        for (var percent = 50; percent <= 100; percent += 5)
+        {
+            FocusEfficiencyOptions.Add(new FocusEfficiencyOption(percent, $"{percent}%"));
+        }
+    }
+
+    private int FindClosestFocusEfficiencyIndex(int value, int fallbackPercent)
+    {
+        if (FocusEfficiencyOptions.Count == 0)
+            return 0;
+
+        var fallbackIndex = FocusEfficiencyOptions
+            .Select((o, i) => new { o.Percent, i })
+            .FirstOrDefault(x => x.Percent == fallbackPercent)?.i ?? 0;
+
+        var item = FocusEfficiencyOptions
+            .Select((o, i) => new { o.Percent, i, Distance = Math.Abs(o.Percent - value) })
+            .OrderBy(x => x.Distance)
+            .FirstOrDefault();
+
+        return item?.i ?? fallbackIndex;
+    }
+
     private void OnLanguageChanged()
     {
         BuildTimeoutOptions();
         BuildLanguageOptions();
+        BuildHighFocusThresholdOptions();
+        BuildFocusEfficiencyOptions();
     }
 
     public void Dispose()
@@ -220,3 +294,12 @@ public record WorkDayStartOption(int Hour, string Label)
     public override string ToString() => Label;
 }
 
+public record HighFocusThresholdOption(int Minutes, string Label)
+{
+    public override string ToString() => Label;
+}
+
+public record FocusEfficiencyOption(int Percent, string Label)
+{
+    public override string ToString() => Label;
+}

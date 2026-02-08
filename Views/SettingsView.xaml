@@ -28,16 +28,14 @@
                        Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
             <ComboBox ItemsSource="{Binding LanguageOptions}"
                       SelectedIndex="{Binding SelectedLanguageIndex}"
-                      MinWidth="200" Height="30" Margin="0,0,0,24"
-                      Foreground="{StaticResource PrimaryTextBrush}" />
+                      MinWidth="200" Height="30" Margin="0,0,0,24" />
 
             <!-- Work Day Start Hour -->
             <TextBlock Text="{DynamicResource WorkDayStartLabel}" FontSize="14"
                        Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
             <ComboBox ItemsSource="{Binding WorkDayStartOptions}"
                       SelectedIndex="{Binding SelectedWorkDayStartIndex}"
-                      MinWidth="200" Height="30" Margin="0,0,0,6"
-                      Foreground="{StaticResource PrimaryTextBrush}" />
+                      MinWidth="200" Height="30" Margin="0,0,0,6" />
             <TextBlock Text="{DynamicResource WorkDayStartDescription}" FontSize="12"
                        Foreground="{StaticResource SecondaryTextBrush}"
                        TextWrapping="Wrap" Margin="0,0,0,24" />
@@ -60,9 +58,35 @@
                            Foreground="{StaticResource SecondaryTextBrush}" Margin="0,0,0,6" />
                 <ComboBox ItemsSource="{Binding TimeoutOptions}"
                           SelectedIndex="{Binding SelectedTimeoutIndex}"
-                          MinWidth="160" Height="30"
-                          Foreground="{StaticResource PrimaryTextBrush}" />
+                          MinWidth="160" Height="30" />
             </StackPanel>
+
+            <!-- High Focus Threshold -->
+            <TextBlock Text="{DynamicResource HighFocusThresholdLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding HighFocusThresholdOptions}"
+                      SelectedIndex="{Binding SelectedHighFocusThresholdIndex}"
+                      MinWidth="200" Height="30" Margin="0,0,0,6" />
+            <TextBlock Text="{DynamicResource HighFocusThresholdDescription}" FontSize="12"
+                       Foreground="{StaticResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" Margin="0,0,0,24" />
+
+            <!-- Focus Efficiency Formula -->
+            <TextBlock Text="{DynamicResource FocusFormulaDescription}" FontSize="12"
+                       Foreground="{StaticResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" Margin="0,0,0,12" />
+
+            <TextBlock Text="{DynamicResource HighFocusWorkPercentLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding FocusEfficiencyOptions}"
+                      SelectedIndex="{Binding SelectedHighFocusWorkPercentIndex}"
+                      MinWidth="200" Height="30" Margin="0,0,0,16" />
+
+            <TextBlock Text="{DynamicResource MediumFocusWorkPercentLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding FocusEfficiencyOptions}"
+                      SelectedIndex="{Binding SelectedMediumFocusWorkPercentIndex}"
+                      MinWidth="200" Height="30" Margin="0,0,0,24" />
 
             <!-- Git Repository -->
             <TextBlock Text="{DynamicResource GitProjectLabel}" FontSize="14"

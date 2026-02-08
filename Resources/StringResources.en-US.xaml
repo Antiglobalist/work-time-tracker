@@ -28,6 +28,11 @@
     <sys:String x:Key="InactivityModeScreenOff" xmlns:sys="clr-namespace:System;assembly=mscorlib">By screen off</sys:String>
     <sys:String x:Key="InactivityModeTimeout" xmlns:sys="clr-namespace:System;assembly=mscorlib">By inactivity timeout</sys:String>
     <sys:String x:Key="TimeoutLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Timeout:</sys:String>
+    <sys:String x:Key="HighFocusThresholdLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">High focus threshold:</sys:String>
+    <sys:String x:Key="HighFocusThresholdDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Activity sessions longer than this value are marked as high focus</sys:String>
+    <sys:String x:Key="FocusFormulaDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Estimated work time formula: High focus x High % + Medium focus x Medium %</sys:String>
+    <sys:String x:Key="HighFocusWorkPercentLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">High focus work percent:</sys:String>
+    <sys:String x:Key="MediumFocusWorkPercentLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Medium focus work percent:</sys:String>
     <sys:String x:Key="GitProjectLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git project to track:</sys:String>
     <sys:String x:Key="ChooseButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Choose</sys:String>
     <sys:String x:Key="SaveButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Save</sys:String>
@@ -42,6 +47,10 @@
     <sys:String x:Key="HistoryPcLabelShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">At PC: </sys:String>
     <sys:String x:Key="TotalForDayLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Total for day: </sys:String>
     <sys:String x:Key="GitBranchesDay" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git branches (day)</sys:String>
+    <sys:String x:Key="FocusQualityTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Focus quality</sys:String>
+    <sys:String x:Key="HighFocusLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">High focus: </sys:String>
+    <sys:String x:Key="MediumFocusLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Medium focus: </sys:String>
+    <sys:String x:Key="EffectiveWorkTimeLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Estimated effective work: </sys:String>
     <sys:String x:Key="DetailsButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Details</sys:String>
     <sys:String x:Key="BackButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">← Back</sys:String>
 

@@ -15,4 +15,20 @@ public class AppSettings
     /// Set to 5 to count times 00:00-04:59 as part of the previous work day.
     /// </summary>
     public int WorkDayStartHour { get; set; } = 0;
+
+    /// <summary>
+    /// Minimum continuous activity duration (in minutes) required to classify
+    /// an activity session as high focus. Shorter activity sessions are medium focus.
+    /// </summary>
+    public int HighFocusThresholdMinutes { get; set; } = 60;
+
+    /// <summary>
+    /// How much of high-focus time is counted as effective work time (0-100).
+    /// </summary>
+    public int HighFocusWorkPercent { get; set; } = 95;
+
+    /// <summary>
+    /// How much of medium-focus time is counted as effective work time (0-100).
+    /// </summary>
+    public int MediumFocusWorkPercent { get; set; } = 85;
 }

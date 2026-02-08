@@ -104,6 +104,33 @@
                 </StackPanel>
             </StackPanel>
 
+            <!-- Focus Quality -->
+            <TextBlock Text="{DynamicResource FocusQualityTitle}" FontSize="16" FontWeight="SemiBold"
+                       Foreground="{StaticResource SecondaryTextBrush}" Margin="0,0,0,8" />
+
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <TextBlock Text="{DynamicResource HighFocusLabel}" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryTextBrush}" />
+                        <TextBlock Text="{Binding HighFocusTime}" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryTextBrush}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{DynamicResource MediumFocusLabel}" FontSize="13"
+                                   Foreground="{StaticResource SecondaryTextBrush}" />
+                        <TextBlock Text="{Binding MediumFocusTime}" FontSize="13"
+                                   Foreground="{StaticResource SecondaryTextBrush}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                        <TextBlock Text="{DynamicResource EffectiveWorkTimeLabel}" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryTextBrush}" />
+                        <TextBlock Text="{Binding EffectiveWorkTime}" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PrimaryTextBrush}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
             <!-- Git Branch Summary -->
             <TextBlock Text="{DynamicResource GitBranchesToday}" FontSize="16" FontWeight="SemiBold"
                        Foreground="{StaticResource SecondaryTextBrush}" Margin="0,12,0,8">

@@ -130,8 +130,8 @@
     <!-- ComboBox Style -->
     <Style TargetType="ComboBox">
         <Setter Property="Background" Value="{StaticResource CardBrush}" />
-        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
-        <Setter Property="TextElement.Foreground" Value="{StaticResource PrimaryTextBrush}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="TextElement.Foreground" Value="Black" />
         <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}" />
         <Setter Property="Padding" Value="8,4" />
     </Style>

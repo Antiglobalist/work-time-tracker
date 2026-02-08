@@ -28,6 +28,11 @@
     <sys:String x:Key="InactivityModeScreenOff" xmlns:sys="clr-namespace:System;assembly=mscorlib">По потуханию экрана</sys:String>
     <sys:String x:Key="InactivityModeTimeout" xmlns:sys="clr-namespace:System;assembly=mscorlib">По таймауту неактивности</sys:String>
     <sys:String x:Key="TimeoutLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Таймаут:</sys:String>
+    <sys:String x:Key="HighFocusThresholdLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Порог высокого фокуса:</sys:String>
+    <sys:String x:Key="HighFocusThresholdDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Сессии активности длиннее этого значения отмечаются как высокий фокус</sys:String>
+    <sys:String x:Key="FocusFormulaDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Формула примерного рабочего времени: Высокий фокус x Высокий % + Средний фокус x Средний %</sys:String>
+    <sys:String x:Key="HighFocusWorkPercentLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Процент работы для высокого фокуса:</sys:String>
+    <sys:String x:Key="MediumFocusWorkPercentLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Процент работы для среднего фокуса:</sys:String>
     <sys:String x:Key="GitProjectLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git-проект для трекинга:</sys:String>
     <sys:String x:Key="ChooseButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Выбрать</sys:String>
     <sys:String x:Key="SaveButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Сохранить</sys:String>
@@ -42,6 +47,10 @@
     <sys:String x:Key="HistoryPcLabelShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">За ПК: </sys:String>
     <sys:String x:Key="TotalForDayLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Итого за день: </sys:String>
     <sys:String x:Key="GitBranchesDay" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git ветки (день)</sys:String>
+    <sys:String x:Key="FocusQualityTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Качество фокуса</sys:String>
+    <sys:String x:Key="HighFocusLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Высокий фокус: </sys:String>
+    <sys:String x:Key="MediumFocusLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Средний фокус: </sys:String>
+    <sys:String x:Key="EffectiveWorkTimeLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Примерно эффективной работы: </sys:String>
     <sys:String x:Key="DetailsButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Подробнее</sys:String>
     <sys:String x:Key="BackButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">← Назад</sys:String>
 
