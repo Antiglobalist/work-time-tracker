@@ -41,7 +41,7 @@ What you can do:
 - stop tracking
 - monitor your day in real time
 
-<img width="831" height="534" alt="image" src="https://github.com/user-attachments/assets/16527d4c-1282-4191-9c23-3dc4189fb300" />
+<img width="1225" height="916" alt="image" src="https://github.com/user-attachments/assets/a7701e6d-3a82-493b-9a3a-d45978a2c529" />
 
 ### 2. History Screen
 
