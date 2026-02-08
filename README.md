@@ -114,6 +114,30 @@ What you can do:
 - Git branch tracker polls current branch and creates branch sessions over time.
 - Data is stored locally in SQLite.
 
+## Focus Time
+
+The app also calculates focus quality from continuous `Activity` sessions:
+- `High focus`: session duration is equal to or higher than the selected threshold.
+- `Medium focus`: session duration is lower than the selected threshold.
+
+You can configure the high-focus threshold in `Settings`:
+- `30 min`
+- `1 h`
+- `2 h`
+- `3 h`
+
+The app also shows estimated effective work time:
+
+`Estimated effective work = High focus * High focus % + Medium focus * Medium focus %`
+
+Both percentages are configurable in `Settings`:
+- `High focus work percent` (default `95%`)
+- `Medium focus work percent` (default `85%`)
+
+This data is visible in the `Focus quality` block on:
+- `Timer` screen (current day)
+- `Day Detail` screen
+
 ## Data Storage
 
 The app stores local data in:
