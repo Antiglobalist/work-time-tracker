@@ -1,0 +1,18 @@
+namespace WorkTimeTracking.Models;
+
+public class AppSettings
+{
+    public bool AutoStartWithWindows { get; set; }
+    public bool MinimizeToTray { get; set; } = true;
+    public string GitRepositoryPath { get; set; } = "";
+    public InactivityDetectionMode InactivityMode { get; set; } = InactivityDetectionMode.ScreenOff;
+    public int InactivityTimeoutMinutes { get; set; } = 10;
+    public AppLanguage AppLanguage { get; set; } = AppLanguage.Auto;
+
+    /// <summary>
+    /// Hour (0-23) when a new work day begins. Times before this hour belong to the previous work day.
+    /// Default is 0 (midnight), meaning work day = calendar day.
+    /// Set to 5 to count times 00:00-04:59 as part of the previous work day.
+    /// </summary>
+    public int WorkDayStartHour { get; set; } = 0;
+}

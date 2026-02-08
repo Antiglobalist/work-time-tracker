@@ -1,0 +1,90 @@
+<UserControl x:Class="WorkTimeTracking.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:WorkTimeTracking.ViewModels">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24,16">
+        <StackPanel MaxWidth="500" HorizontalAlignment="Left">
+            <TextBlock Text="{DynamicResource SettingsTitle}" FontSize="22" FontWeight="SemiBold"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,24" />
+
+            <!-- Auto Start -->
+            <CheckBox IsChecked="{Binding AutoStartWithWindows}" Margin="0,0,0,16">
+                <TextBlock Text="{DynamicResource AutoStartWithWindows}"
+                           Foreground="{StaticResource PrimaryTextBrush}" />
+            </CheckBox>
+
+            <!-- Minimize to Tray -->
+            <CheckBox IsChecked="{Binding MinimizeToTray}" Margin="0,0,0,24">
+                <TextBlock Text="{DynamicResource MinimizeToTray}"
+                           Foreground="{StaticResource PrimaryTextBrush}" />
+            </CheckBox>
+
+            <!-- Language -->
+            <TextBlock Text="{DynamicResource LanguageLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding LanguageOptions}"
+                      SelectedIndex="{Binding SelectedLanguageIndex}"
+                      MinWidth="200" Height="30" Margin="0,0,0,24"
+                      Foreground="{StaticResource PrimaryTextBrush}" />
+
+            <!-- Work Day Start Hour -->
+            <TextBlock Text="{DynamicResource WorkDayStartLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding WorkDayStartOptions}"
+                      SelectedIndex="{Binding SelectedWorkDayStartIndex}"
+                      MinWidth="200" Height="30" Margin="0,0,0,6"
+                      Foreground="{StaticResource PrimaryTextBrush}" />
+            <TextBlock Text="{DynamicResource WorkDayStartDescription}" FontSize="12"
+                       Foreground="{StaticResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" Margin="0,0,0,24" />
+
+            <!-- Inactivity Detection -->
+            <TextBlock Text="{DynamicResource InactivityDetectionLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <StackPanel Margin="0,0,0,12">
+                <RadioButton Content="{DynamicResource InactivityModeScreenOff}" GroupName="InactivityMode"
+                             IsChecked="{Binding UseScreenOffDetection}"
+                             Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                <RadioButton Content="{DynamicResource InactivityModeTimeout}" GroupName="InactivityMode"
+                             IsChecked="{Binding UseTimeoutDetection}"
+                             Foreground="{StaticResource PrimaryTextBrush}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,24"
+                        Visibility="{Binding UseTimeoutDetection, Converter={StaticResource BoolToVis}}">
+                <TextBlock Text="{DynamicResource TimeoutLabel}" FontSize="13"
+                           Foreground="{StaticResource SecondaryTextBrush}" Margin="0,0,0,6" />
+                <ComboBox ItemsSource="{Binding TimeoutOptions}"
+                          SelectedIndex="{Binding SelectedTimeoutIndex}"
+                          MinWidth="160" Height="30"
+                          Foreground="{StaticResource PrimaryTextBrush}" />
+            </StackPanel>
+
+            <!-- Git Repository -->
+            <TextBlock Text="{DynamicResource GitProjectLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Text="{Binding GitRepositoryPath}" Height="30"
+                         VerticalContentAlignment="Center" />
+                <Button Grid.Column="2" Content="{DynamicResource ChooseButton}"
+                        Command="{Binding BrowseGitRepositoryCommand}"
+                        Style="{StaticResource StartButtonStyle}"
+                        Padding="16,6" FontSize="12" />
+            </Grid>
+
+            <!-- Save Button -->
+            <Button Content="{DynamicResource SaveButton}" Command="{Binding SaveCommand}"
+                    Style="{StaticResource StartButtonStyle}"
+                    HorizontalAlignment="Left" Padding="32,10" FontSize="14" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

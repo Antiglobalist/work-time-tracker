@@ -1,0 +1,60 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <sys:String x:Key="AppTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Time Tracking</sys:String>
+    <sys:String x:Key="MenuTimer" xmlns:sys="clr-namespace:System;assembly=mscorlib">Timer</sys:String>
+    <sys:String x:Key="MenuHistory" xmlns:sys="clr-namespace:System;assembly=mscorlib">History</sys:String>
+    <sys:String x:Key="MenuSettings" xmlns:sys="clr-namespace:System;assembly=mscorlib">Settings</sys:String>
+
+    <sys:String x:Key="StatusLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Status: </sys:String>
+    <sys:String x:Key="StatusRunning" xmlns:sys="clr-namespace:System;assembly=mscorlib">Running</sys:String>
+    <sys:String x:Key="StatusStopped" xmlns:sys="clr-namespace:System;assembly=mscorlib">Stopped</sys:String>
+    <sys:String x:Key="ToggleStart" xmlns:sys="clr-namespace:System;assembly=mscorlib">Start</sys:String>
+    <sys:String x:Key="ToggleStop" xmlns:sys="clr-namespace:System;assembly=mscorlib">Stop</sys:String>
+
+    <sys:String x:Key="CurrentDayTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Today</sys:String>
+    <sys:String x:Key="ActiveTimeLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Time at PC: </sys:String>
+    <sys:String x:Key="InactiveTimeLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib"> | Away: </sys:String>
+    <sys:String x:Key="LastActivityLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Last activity: </sys:String>
+    <sys:String x:Key="WorkDayStartTime" xmlns:sys="clr-namespace:System;assembly=mscorlib">Started: </sys:String>
+    <sys:String x:Key="WorkDayEndTime" xmlns:sys="clr-namespace:System;assembly=mscorlib">Ended: </sys:String>
+    <sys:String x:Key="GitBranchesToday" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git branches (today)</sys:String>
+    <sys:String x:Key="ActiveLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">active</sys:String>
+    <sys:String x:Key="IntervalsLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Intervals</sys:String>
+
+    <sys:String x:Key="SettingsTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Settings</sys:String>
+    <sys:String x:Key="AutoStartWithWindows" xmlns:sys="clr-namespace:System;assembly=mscorlib">Start with Windows</sys:String>
+    <sys:String x:Key="MinimizeToTray" xmlns:sys="clr-namespace:System;assembly=mscorlib">Minimize to tray</sys:String>
+    <sys:String x:Key="InactivityDetectionLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Inactivity detection:</sys:String>
+    <sys:String x:Key="InactivityModeScreenOff" xmlns:sys="clr-namespace:System;assembly=mscorlib">By screen off</sys:String>
+    <sys:String x:Key="InactivityModeTimeout" xmlns:sys="clr-namespace:System;assembly=mscorlib">By inactivity timeout</sys:String>
+    <sys:String x:Key="TimeoutLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Timeout:</sys:String>
+    <sys:String x:Key="GitProjectLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git project to track:</sys:String>
+    <sys:String x:Key="ChooseButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Choose</sys:String>
+    <sys:String x:Key="SaveButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Save</sys:String>
+    <sys:String x:Key="SelectGitProject" xmlns:sys="clr-namespace:System;assembly=mscorlib">Select Git project</sys:String>
+    <sys:String x:Key="LanguageLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Language:</sys:String>
+    <sys:String x:Key="LanguageAuto" xmlns:sys="clr-namespace:System;assembly=mscorlib">Auto (Windows)</sys:String>
+    <sys:String x:Key="LanguageRussian" xmlns:sys="clr-namespace:System;assembly=mscorlib">Russian</sys:String>
+    <sys:String x:Key="LanguageEnglish" xmlns:sys="clr-namespace:System;assembly=mscorlib">English</sys:String>
+    <sys:String x:Key="WorkDayStartLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Work day starts at:</sys:String>
+    <sys:String x:Key="WorkDayStartDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Times before this hour belong to the previous work day</sys:String>
+
+    <sys:String x:Key="HistoryPcLabelShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">At PC: </sys:String>
+    <sys:String x:Key="TotalForDayLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Total for day: </sys:String>
+    <sys:String x:Key="GitBranchesDay" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git branches (day)</sys:String>
+    <sys:String x:Key="DetailsButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Details</sys:String>
+    <sys:String x:Key="BackButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">← Back</sys:String>
+
+    <sys:String x:Key="SessionActivityPrefix" xmlns:sys="clr-namespace:System;assembly=mscorlib">Activity: </sys:String>
+    <sys:String x:Key="SessionInactivityPrefix" xmlns:sys="clr-namespace:System;assembly=mscorlib">Away: </sys:String>
+    <sys:String x:Key="ReasonSleep" xmlns:sys="clr-namespace:System;assembly=mscorlib">PC sleep</sys:String>
+    <sys:String x:Key="ReasonHelloRejected" xmlns:sys="clr-namespace:System;assembly=mscorlib">Hello rejected</sys:String>
+    <sys:String x:Key="ReasonHelloTimeout" xmlns:sys="clr-namespace:System;assembly=mscorlib">Hello timeout</sys:String>
+    <sys:String x:Key="ReasonScreenOff" xmlns:sys="clr-namespace:System;assembly=mscorlib">Screen off</sys:String>
+    <sys:String x:Key="HelloPrompt" xmlns:sys="clr-namespace:System;assembly=mscorlib">Confirm you are at the PC</sys:String>
+
+    <sys:String x:Key="HourShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">h</sys:String>
+    <sys:String x:Key="MinuteShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">min</sys:String>
+
+    <sys:String x:Key="TrayTooltip" xmlns:sys="clr-namespace:System;assembly=mscorlib">Time tracking</sys:String>
+</ResourceDictionary>

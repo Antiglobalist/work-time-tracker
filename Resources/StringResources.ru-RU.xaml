@@ -1,0 +1,60 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <sys:String x:Key="AppTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Отслеживание времени</sys:String>
+    <sys:String x:Key="MenuTimer" xmlns:sys="clr-namespace:System;assembly=mscorlib">Таймер</sys:String>
+    <sys:String x:Key="MenuHistory" xmlns:sys="clr-namespace:System;assembly=mscorlib">История</sys:String>
+    <sys:String x:Key="MenuSettings" xmlns:sys="clr-namespace:System;assembly=mscorlib">Настройки</sys:String>
+
+    <sys:String x:Key="StatusLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Статус: </sys:String>
+    <sys:String x:Key="StatusRunning" xmlns:sys="clr-namespace:System;assembly=mscorlib">Запущено</sys:String>
+    <sys:String x:Key="StatusStopped" xmlns:sys="clr-namespace:System;assembly=mscorlib">Остановлено</sys:String>
+    <sys:String x:Key="ToggleStart" xmlns:sys="clr-namespace:System;assembly=mscorlib">Старт</sys:String>
+    <sys:String x:Key="ToggleStop" xmlns:sys="clr-namespace:System;assembly=mscorlib">Остановить</sys:String>
+
+    <sys:String x:Key="CurrentDayTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Текущий день</sys:String>
+    <sys:String x:Key="ActiveTimeLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Время за компьютером: </sys:String>
+    <sys:String x:Key="InactiveTimeLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib"> | Вне ПК: </sys:String>
+    <sys:String x:Key="LastActivityLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Последняя активность: </sys:String>
+    <sys:String x:Key="WorkDayStartTime" xmlns:sys="clr-namespace:System;assembly=mscorlib">Начало: </sys:String>
+    <sys:String x:Key="WorkDayEndTime" xmlns:sys="clr-namespace:System;assembly=mscorlib">Конец: </sys:String>
+    <sys:String x:Key="GitBranchesToday" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git ветки (сегодня)</sys:String>
+    <sys:String x:Key="ActiveLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">активна</sys:String>
+    <sys:String x:Key="IntervalsLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Интервалы</sys:String>
+
+    <sys:String x:Key="SettingsTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Настройки</sys:String>
+    <sys:String x:Key="AutoStartWithWindows" xmlns:sys="clr-namespace:System;assembly=mscorlib">Автозапуск с Windows</sys:String>
+    <sys:String x:Key="MinimizeToTray" xmlns:sys="clr-namespace:System;assembly=mscorlib">Сворачивание в трей</sys:String>
+    <sys:String x:Key="InactivityDetectionLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Определение отсутствия:</sys:String>
+    <sys:String x:Key="InactivityModeScreenOff" xmlns:sys="clr-namespace:System;assembly=mscorlib">По потуханию экрана</sys:String>
+    <sys:String x:Key="InactivityModeTimeout" xmlns:sys="clr-namespace:System;assembly=mscorlib">По таймауту неактивности</sys:String>
+    <sys:String x:Key="TimeoutLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Таймаут:</sys:String>
+    <sys:String x:Key="GitProjectLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git-проект для трекинга:</sys:String>
+    <sys:String x:Key="ChooseButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Выбрать</sys:String>
+    <sys:String x:Key="SaveButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Сохранить</sys:String>
+    <sys:String x:Key="SelectGitProject" xmlns:sys="clr-namespace:System;assembly=mscorlib">Выберите git-проект</sys:String>
+    <sys:String x:Key="LanguageLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Язык:</sys:String>
+    <sys:String x:Key="LanguageAuto" xmlns:sys="clr-namespace:System;assembly=mscorlib">Авто (Windows)</sys:String>
+    <sys:String x:Key="LanguageRussian" xmlns:sys="clr-namespace:System;assembly=mscorlib">Русский</sys:String>
+    <sys:String x:Key="LanguageEnglish" xmlns:sys="clr-namespace:System;assembly=mscorlib">Английский</sys:String>
+    <sys:String x:Key="WorkDayStartLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Рабочий день начинается в:</sys:String>
+    <sys:String x:Key="WorkDayStartDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Время до этого часа относится к предыдущему рабочему дню</sys:String>
+
+    <sys:String x:Key="HistoryPcLabelShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">За ПК: </sys:String>
+    <sys:String x:Key="TotalForDayLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Итого за день: </sys:String>
+    <sys:String x:Key="GitBranchesDay" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git ветки (день)</sys:String>
+    <sys:String x:Key="DetailsButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">Подробнее</sys:String>
+    <sys:String x:Key="BackButton" xmlns:sys="clr-namespace:System;assembly=mscorlib">← Назад</sys:String>
+
+    <sys:String x:Key="SessionActivityPrefix" xmlns:sys="clr-namespace:System;assembly=mscorlib">Активность: </sys:String>
+    <sys:String x:Key="SessionInactivityPrefix" xmlns:sys="clr-namespace:System;assembly=mscorlib">Отсутствие: </sys:String>
+    <sys:String x:Key="ReasonSleep" xmlns:sys="clr-namespace:System;assembly=mscorlib">Сон ПК</sys:String>
+    <sys:String x:Key="ReasonHelloRejected" xmlns:sys="clr-namespace:System;assembly=mscorlib">Hello отклонён</sys:String>
+    <sys:String x:Key="ReasonHelloTimeout" xmlns:sys="clr-namespace:System;assembly=mscorlib">Hello таймаут</sys:String>
+    <sys:String x:Key="ReasonScreenOff" xmlns:sys="clr-namespace:System;assembly=mscorlib">Экран выключен</sys:String>
+    <sys:String x:Key="HelloPrompt" xmlns:sys="clr-namespace:System;assembly=mscorlib">Подтвердите присутствие за компьютером</sys:String>
+
+    <sys:String x:Key="HourShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">ч</sys:String>
+    <sys:String x:Key="MinuteShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">м</sys:String>
+
+    <sys:String x:Key="TrayTooltip" xmlns:sys="clr-namespace:System;assembly=mscorlib">Отслеживание времени</sys:String>
+</ResourceDictionary>

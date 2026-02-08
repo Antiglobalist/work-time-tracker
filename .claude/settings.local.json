@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "Bash(dir:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)",
+      "Bash(taskkill:*)",
+      "Bash(dotnet run:*)",
+      "Bash(start \"\" \"bin/Debug/net10.0-windows10.0.22621.0/WorkTimeTracking.exe\")",
+      "Bash(powershell -c \"Get-Content \"\"$env:LOCALAPPDATA\\\\WorkTimeTracking\\\\startup.log\"\" -Tail 50\")",
+      "Bash(powershell:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(sqlite3:*)",
+      "Bash(start \"\" \"C:\\\\work\\\\pet\\\\WorkTimeTracking\\\\bin\\\\Debug\\\\net10.0-windows10.0.22621.0\\\\WorkTimeTracking.exe\")"
+    ]
+  }
+}
