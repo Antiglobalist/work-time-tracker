@@ -41,7 +41,7 @@ What you can do:
 - stop tracking
 - monitor your day in real time
 
-`TODO: add screenshot - Timer screen`
+<img width="831" height="534" alt="image" src="https://github.com/user-attachments/assets/16527d4c-1282-4191-9c23-3dc4189fb300" />
 
 ### 2. History Screen
 
@@ -59,7 +59,7 @@ What you can do:
 - compare work patterns
 - open full day details
 
-`TODO: add screenshot - History screen`
+<img width="833" height="536" alt="image" src="https://github.com/user-attachments/assets/7ee5135b-355e-4887-af35-39fd2133fa5f" />
 
 ### 3. Day Detail Screen
 
@@ -75,7 +75,7 @@ What you can do:
 - inspect a single day deeply
 - return back to History
 
-`TODO: add screenshot - Day Detail screen`
+<img width="886" height="800" alt="image" src="https://github.com/user-attachments/assets/60b8e8c8-8a23-4a3f-a367-80277cee7248" />
 
 ### 4. Settings Screen
 
@@ -96,7 +96,7 @@ What you can do:
 - save settings and apply language
 - choose your Git project path
 
-`TODO: add screenshot - Settings screen`
+<img width="1062" height="720" alt="image" src="https://github.com/user-attachments/assets/b5b95547-a24f-4aa0-a64d-ab4ecda35984" />
 
 ## Core Functions
 
