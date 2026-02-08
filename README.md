@@ -75,7 +75,7 @@ What you can do:
 - inspect a single day deeply
 - return back to History
 
-<img width="886" height="800" alt="image" src="https://github.com/user-attachments/assets/60b8e8c8-8a23-4a3f-a367-80277cee7248" />
+<img width="881" height="753" alt="image" src="https://github.com/user-attachments/assets/c8737c2c-5a9c-4358-a2f3-e8826fccade6" />
 
 ### 4. Settings Screen
 
