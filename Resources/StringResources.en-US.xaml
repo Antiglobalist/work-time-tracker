@@ -66,4 +66,10 @@
     <sys:String x:Key="MinuteShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">min</sys:String>
 
     <sys:String x:Key="TrayTooltip" xmlns:sys="clr-namespace:System;assembly=mscorlib">Time tracking</sys:String>
+
+    <sys:String x:Key="WorkGoalLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Work goal notification:</sys:String>
+    <sys:String x:Key="WorkGoalDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Show notification when estimated effective work reaches this goal</sys:String>
+    <sys:String x:Key="WorkGoalDisabled" xmlns:sys="clr-namespace:System;assembly=mscorlib">Disabled</sys:String>
+    <sys:String x:Key="WorkGoalReachedTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Work goal reached!</sys:String>
+    <sys:String x:Key="WorkGoalReachedMessage" xmlns:sys="clr-namespace:System;assembly=mscorlib">Your estimated effective work for today has reached the goal. Good job!</sys:String>
 </ResourceDictionary>

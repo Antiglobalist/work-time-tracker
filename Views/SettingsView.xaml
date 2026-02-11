@@ -88,6 +88,16 @@
                       SelectedIndex="{Binding SelectedMediumFocusWorkPercentIndex}"
                       MinWidth="200" Height="30" Margin="0,0,0,24" />
 
+            <!-- Work Goal Notification -->
+            <TextBlock Text="{DynamicResource WorkGoalLabel}" FontSize="14"
+                       Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />
+            <ComboBox ItemsSource="{Binding WorkGoalOptions}"
+                      SelectedIndex="{Binding SelectedWorkGoalIndex}"
+                      MinWidth="200" Height="30" Margin="0,0,0,6" />
+            <TextBlock Text="{DynamicResource WorkGoalDescription}" FontSize="12"
+                       Foreground="{StaticResource SecondaryTextBrush}"
+                       TextWrapping="Wrap" Margin="0,0,0,24" />
+
             <!-- Git Repository -->
             <TextBlock Text="{DynamicResource GitProjectLabel}" FontSize="14"
                        Foreground="{StaticResource PrimaryTextBrush}" Margin="0,0,0,8" />

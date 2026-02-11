@@ -35,6 +35,11 @@ public sealed class TrayIconService : IDisposable
         _notifyIcon.Text = TruncateTooltip(tooltip);
     }
 
+    public void ShowBalloonTip(string title, string text, ToolTipIcon icon = ToolTipIcon.Info, int timeoutMs = 5000)
+    {
+        _notifyIcon?.ShowBalloonTip(timeoutMs, title, text, icon);
+    }
+
     private void OnMouseClick(object? sender, MouseEventArgs e)
     {
         if (e.Button == MouseButtons.Left)

@@ -31,4 +31,10 @@ public class AppSettings
     /// How much of medium-focus time is counted as effective work time (0-100).
     /// </summary>
     public int MediumFocusWorkPercent { get; set; } = 85;
+
+    /// <summary>
+    /// Daily effective work goal in minutes. A notification is shown when reached.
+    /// Default is 480 (8 hours). Set to 0 to disable.
+    /// </summary>
+    public int WorkGoalMinutes { get; set; } = 480;
 }

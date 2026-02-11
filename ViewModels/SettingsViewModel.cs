@@ -46,11 +46,15 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private int _selectedMediumFocusWorkPercentIndex;
 
+    [ObservableProperty]
+    private int _selectedWorkGoalIndex;
+
     public ObservableCollection<InactivityTimeoutOption> TimeoutOptions { get; } = new();
     public ObservableCollection<LanguageOption> LanguageOptions { get; } = new();
     public ObservableCollection<WorkDayStartOption> WorkDayStartOptions { get; } = new();
     public ObservableCollection<HighFocusThresholdOption> HighFocusThresholdOptions { get; } = new();
     public ObservableCollection<FocusEfficiencyOption> FocusEfficiencyOptions { get; } = new();
+    public ObservableCollection<WorkGoalOption> WorkGoalOptions { get; } = new();
 
     public SettingsViewModel(ISettingsService settingsService, ILocalizationService localizationService)
     {
@@ -63,6 +67,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
         BuildWorkDayStartOptions();
         BuildHighFocusThresholdOptions();
         BuildFocusEfficiencyOptions();
+        BuildWorkGoalOptions();
         LoadSettings();
     }
 
@@ -99,6 +104,11 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
 
         SelectedHighFocusWorkPercentIndex = FindClosestFocusEfficiencyIndex(s.HighFocusWorkPercent, 95);
         SelectedMediumFocusWorkPercentIndex = FindClosestFocusEfficiencyIndex(s.MediumFocusWorkPercent, 85);
+
+        SelectedWorkGoalIndex = WorkGoalOptions
+            .Select((o, i) => new { o.Minutes, i })
+            .FirstOrDefault(x => x.Minutes == s.WorkGoalMinutes)?.i ?? 5;
+        if (SelectedWorkGoalIndex < 0) SelectedWorkGoalIndex = 5;
     }
 
     [RelayCommand]
@@ -136,6 +146,10 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
 
         s.HighFocusWorkPercent = FocusEfficiencyOptions[SelectedHighFocusWorkPercentIndex].Percent;
         s.MediumFocusWorkPercent = FocusEfficiencyOptions[SelectedMediumFocusWorkPercentIndex].Percent;
+
+        if (SelectedWorkGoalIndex < 0 || SelectedWorkGoalIndex >= WorkGoalOptions.Count)
+            SelectedWorkGoalIndex = 5;
+        s.WorkGoalMinutes = WorkGoalOptions[SelectedWorkGoalIndex].Minutes;
 
         // Update the static helper with the new setting
         WorkDayHelper.WorkDayStartHour = s.WorkDayStartHour;
@@ -248,6 +262,22 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
         }
     }
 
+    private void BuildWorkGoalOptions()
+    {
+        WorkGoalOptions.Clear();
+        var h = _localizationService["HourShort"];
+        var m = _localizationService["MinuteShort"];
+        WorkGoalOptions.Add(new WorkGoalOption(0, _localizationService["WorkGoalDisabled"]));
+        WorkGoalOptions.Add(new WorkGoalOption(360, $"6 {h}"));
+        WorkGoalOptions.Add(new WorkGoalOption(390, $"6 {h} 30 {m}"));
+        WorkGoalOptions.Add(new WorkGoalOption(420, $"7 {h}"));
+        WorkGoalOptions.Add(new WorkGoalOption(450, $"7 {h} 30 {m}"));
+        WorkGoalOptions.Add(new WorkGoalOption(480, $"8 {h}"));
+        WorkGoalOptions.Add(new WorkGoalOption(510, $"8 {h} 30 {m}"));
+        WorkGoalOptions.Add(new WorkGoalOption(540, $"9 {h}"));
+        WorkGoalOptions.Add(new WorkGoalOption(600, $"10 {h}"));
+    }
+
     private int FindClosestFocusEfficiencyIndex(int value, int fallbackPercent)
     {
         if (FocusEfficiencyOptions.Count == 0)
@@ -271,6 +301,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
         BuildLanguageOptions();
         BuildHighFocusThresholdOptions();
         BuildFocusEfficiencyOptions();
+        BuildWorkGoalOptions();
     }
 
     public void Dispose()
@@ -300,6 +331,11 @@ public record HighFocusThresholdOption(int Minutes, string Label)
 }
 
 public record FocusEfficiencyOption(int Percent, string Label)
+{
+    public override string ToString() => Label;
+}
+
+public record WorkGoalOption(int Minutes, string Label)
 {
     public override string ToString() => Label;
 }

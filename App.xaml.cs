@@ -118,6 +118,7 @@ public partial class App : Application
         services.AddSingleton<WindowsHelloService>();
         services.AddSingleton<GitBranchTrackingService>();
         services.AddSingleton<PowerEventService>();
+        services.AddSingleton<TrayIconService>();
 
         // ViewModels
         services.AddTransient<TimerViewModel>();
@@ -134,7 +135,7 @@ public partial class App : Application
     {
         if (_trayIcon != null) return;
 
-        _trayIcon = new TrayIconService();
+        _trayIcon = _services.GetRequiredService<TrayIconService>();
         var tooltip = _localizationService?["TrayTooltip"] ?? "WorkTimeTracking";
         _trayIcon.Create(tooltip);
         _trayIcon.LeftClick += ShowMainWindow;

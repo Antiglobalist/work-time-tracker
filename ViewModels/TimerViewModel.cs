@@ -15,6 +15,8 @@ public partial class TimerViewModel : ObservableObject, IDisposable
     private readonly DispatcherTimer _refreshTimer;
     private readonly ILocalizationService _localizationService;
     private readonly ISettingsService _settingsService;
+    private readonly TrayIconService _trayIconService;
+    private DateTime? _goalNotificationShownForWorkDay;
 
     [ObservableProperty]
     private bool _isTracking;
@@ -55,12 +57,13 @@ public partial class TimerViewModel : ObservableObject, IDisposable
     public ObservableCollection<SessionDisplayItem> Sessions { get; } = new();
     public ObservableCollection<GitBranchSummaryItem> GitBranchSummaries { get; } = new();
 
-    public TimerViewModel(ActivityTrackingService trackingService, SessionRepository sessionRepository, ILocalizationService localizationService, ISettingsService settingsService)
+    public TimerViewModel(ActivityTrackingService trackingService, SessionRepository sessionRepository, ILocalizationService localizationService, ISettingsService settingsService, TrayIconService trayIconService)
     {
         _trackingService = trackingService;
         _sessionRepository = sessionRepository;
         _localizationService = localizationService;
         _settingsService = settingsService;
+        _trayIconService = trayIconService;
 
         _trackingService.StateChanged += RefreshData;
         _localizationService.LanguageChanged += OnLanguageChanged;
@@ -161,7 +164,9 @@ public partial class TimerViewModel : ObservableObject, IDisposable
         var effectiveSeconds =
             (highFocus.TotalSeconds * highFocusWorkPercent / 100.0) +
             (mediumFocus.TotalSeconds * mediumFocusWorkPercent / 100.0);
-        EffectiveWorkTime = _localizationService.FormatHoursMinutes(TimeSpan.FromSeconds(effectiveSeconds));
+        var effectiveWorkSpan = TimeSpan.FromSeconds(effectiveSeconds);
+        EffectiveWorkTime = _localizationService.FormatHoursMinutes(effectiveWorkSpan);
+        CheckWorkGoalReached(effectiveWorkSpan, currentWorkDay);
         LastActivity = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
         FirstActivityTime = firstActivityStart?.ToString("HH:mm") ?? "--:--";
         LastActivityTime = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
@@ -180,6 +185,24 @@ public partial class TimerViewModel : ObservableObject, IDisposable
             var grouped = GitBranchSummaryItem.BuildSummaries(gitSessions, sessions, DateTime.Now, _localizationService);
             foreach (var item in grouped)
                 GitBranchSummaries.Add(item);
+        }
+    }
+
+    private void CheckWorkGoalReached(TimeSpan effectiveWork, DateTime workDay)
+    {
+        var goalMinutes = _settingsService.Settings.WorkGoalMinutes;
+        if (goalMinutes <= 0)
+            return;
+
+        if (_goalNotificationShownForWorkDay == workDay)
+            return;
+
+        if (effectiveWork.TotalMinutes >= goalMinutes)
+        {
+            _goalNotificationShownForWorkDay = workDay;
+            _trayIconService.ShowBalloonTip(
+                _localizationService["WorkGoalReachedTitle"],
+                _localizationService["WorkGoalReachedMessage"]);
         }
     }
 

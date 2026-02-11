@@ -66,4 +66,10 @@
     <sys:String x:Key="MinuteShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">м</sys:String>
 
     <sys:String x:Key="TrayTooltip" xmlns:sys="clr-namespace:System;assembly=mscorlib">Отслеживание времени</sys:String>
+
+    <sys:String x:Key="WorkGoalLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Уведомление о цели работы:</sys:String>
+    <sys:String x:Key="WorkGoalDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Показать уведомление, когда эффективная работа достигнет цели</sys:String>
+    <sys:String x:Key="WorkGoalDisabled" xmlns:sys="clr-namespace:System;assembly=mscorlib">Выключено</sys:String>
+    <sys:String x:Key="WorkGoalReachedTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Цель работы достигнута!</sys:String>
+    <sys:String x:Key="WorkGoalReachedMessage" xmlns:sys="clr-namespace:System;assembly=mscorlib">Эффективная работа за сегодня достигла цели. Отличная работа!</sys:String>
 </ResourceDictionary>
