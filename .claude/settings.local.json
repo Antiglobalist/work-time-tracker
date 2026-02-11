@@ -16,7 +16,8 @@
       "Bash(timeout /t 3 /nobreak)",
       "Bash(sqlite3:*)",
       "Bash(start \"\" \"C:\\\\work\\\\pet\\\\WorkTimeTracking\\\\bin\\\\Debug\\\\net10.0-windows10.0.22621.0\\\\WorkTimeTracking.exe\")",
-      "Bash(dotnet publish:*)"
+      "Bash(dotnet publish:*)",
+      "Bash(start \"\" \"bin\\\\Release\\\\net10.0-windows10.0.22621.0\\\\WorkTimeTracking.exe\")"
     ]
   }
 }

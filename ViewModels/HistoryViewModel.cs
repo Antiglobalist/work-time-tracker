@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -16,10 +17,25 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
     private readonly ILocalizationService _localizationService;
     private readonly ISettingsService _settingsService;
 
+    private List<DaySummaryItem> _allDays = new();
+    private bool _isUpdatingFilters;
+
     public ObservableCollection<DaySummaryItem> Days { get; } = new();
 
     [ObservableProperty]
     private DaySummaryItem? _selectedDay;
+
+    public ObservableCollection<int> AvailableYears { get; } = new();
+    public ObservableCollection<string> AvailableMonths { get; } = new();
+
+    [ObservableProperty]
+    private int? _selectedYear;
+
+    [ObservableProperty]
+    private string? _selectedMonth;
+
+    [ObservableProperty]
+    private bool _sortAscending;
 
     public HistoryViewModel(SessionRepository sessionRepository, INavigationService navigationService, ILocalizationService localizationService, ISettingsService settingsService)
     {
@@ -41,14 +57,17 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
     {
         var selectedDate = SelectedDay?.Date;
 
-        Days.Clear();
+        _allDays.Clear();
         var dates = _sessionRepository.GetAllDatesWithSessions();
         foreach (var date in dates)
         {
             var sessions = _sessionRepository.GetSessionsForDate(date);
             var gitSessions = _sessionRepository.GetGitBranchSessionsForDate(date);
-            Days.Add(new DaySummaryItem(date, sessions, gitSessions, _localizationService));
+            _allDays.Add(new DaySummaryItem(date, sessions, gitSessions, _localizationService, _settingsService));
         }
+
+        UpdateAvailableFilters();
+        ApplyFilter();
 
         if (Days.Count == 0)
         {
@@ -64,6 +83,143 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         {
             SelectedDay = Days[0];
         }
+    }
+
+    private void UpdateAvailableFilters()
+    {
+        _isUpdatingFilters = true;
+
+        var previousYear = SelectedYear;
+        var previousMonth = SelectedMonth;
+
+        var years = _allDays.Select(d => d.Date.Year).Distinct().OrderByDescending(y => y).ToList();
+        AvailableYears.Clear();
+        foreach (var y in years)
+            AvailableYears.Add(y);
+
+        if (previousYear.HasValue && AvailableYears.Contains(previousYear.Value))
+            SelectedYear = previousYear.Value;
+        else if (AvailableYears.Count > 0)
+            SelectedYear = AvailableYears[0];
+        else
+            SelectedYear = null;
+
+        UpdateAvailableMonths();
+
+        if (previousMonth != null && AvailableMonths.Contains(previousMonth))
+            SelectedMonth = previousMonth;
+        else if (AvailableMonths.Count > 0)
+            SelectedMonth = AvailableMonths[0];
+        else
+            SelectedMonth = null;
+
+        _isUpdatingFilters = false;
+    }
+
+    private void UpdateAvailableMonths()
+    {
+        var previousMonth = SelectedMonth;
+        AvailableMonths.Clear();
+
+        if (!SelectedYear.HasValue)
+            return;
+
+        var months = _allDays
+            .Where(d => d.Date.Year == SelectedYear.Value)
+            .Select(d => d.Date.Month)
+            .Distinct()
+            .OrderByDescending(m => m)
+            .ToList();
+
+        foreach (var m in months)
+        {
+            var name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m);
+            name = char.ToUpper(name[0]) + name.Substring(1);
+            AvailableMonths.Add(name);
+        }
+
+        if (previousMonth != null && AvailableMonths.Contains(previousMonth))
+            SelectedMonth = previousMonth;
+        else if (AvailableMonths.Count > 0)
+            SelectedMonth = AvailableMonths[0];
+        else
+            SelectedMonth = null;
+    }
+
+    private int? GetMonthNumberFromName(string? monthName)
+    {
+        if (string.IsNullOrEmpty(monthName))
+            return null;
+
+        for (int i = 1; i <= 12; i++)
+        {
+            var name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i);
+            name = char.ToUpper(name[0]) + name.Substring(1);
+            if (name == monthName)
+                return i;
+        }
+        return null;
+    }
+
+    private void ApplyFilter()
+    {
+        var selectedDate = SelectedDay?.Date;
+        Days.Clear();
+
+        var filtered = _allDays.AsEnumerable();
+
+        if (SelectedYear.HasValue)
+            filtered = filtered.Where(d => d.Date.Year == SelectedYear.Value);
+
+        var monthNumber = GetMonthNumberFromName(SelectedMonth);
+        if (monthNumber.HasValue)
+            filtered = filtered.Where(d => d.Date.Month == monthNumber.Value);
+
+        var sorted = SortAscending
+            ? filtered.OrderBy(d => d.Date)
+            : filtered.OrderByDescending(d => d.Date);
+
+        foreach (var day in sorted)
+            Days.Add(day);
+
+        if (Days.Count == 0)
+        {
+            SelectedDay = null;
+            return;
+        }
+
+        if (selectedDate.HasValue)
+            SelectedDay = Days.FirstOrDefault(d => d.Date.Date == selectedDate.Value.Date) ?? Days[0];
+        else
+            SelectedDay = Days[0];
+    }
+
+    partial void OnSelectedYearChanged(int? value)
+    {
+        if (_isUpdatingFilters) return;
+
+        _isUpdatingFilters = true;
+        UpdateAvailableMonths();
+        _isUpdatingFilters = false;
+
+        ApplyFilter();
+    }
+
+    partial void OnSelectedMonthChanged(string? value)
+    {
+        if (_isUpdatingFilters) return;
+        ApplyFilter();
+    }
+
+    partial void OnSortAscendingChanged(bool value)
+    {
+        ApplyFilter();
+    }
+
+    [RelayCommand]
+    private void ToggleSort()
+    {
+        SortAscending = !SortAscending;
     }
 
     partial void OnSelectedDayChanged(DaySummaryItem? value)
@@ -115,20 +271,29 @@ public class DaySummaryItem
     public string ActiveTime { get; }
     public string InactiveTime { get; }
     public string TotalTime { get; }
+    public string EffectiveWorkTime { get; }
     public string FirstActivityTime { get; }
     public string LastActivityTime { get; }
     public List<SessionDisplayItem> Sessions { get; }
     public List<GitBranchSummaryItem> GitBranchSummaries { get; }
 
-    public DaySummaryItem(DateTime date, List<Session> sessions, List<GitBranchSession> gitSessions, ILocalizationService localizationService)
+    public DaySummaryItem(DateTime date, List<Session> sessions, List<GitBranchSession> gitSessions, ILocalizationService localizationService, ISettingsService settingsService)
     {
         Date = date;
         DateText = date.ToString("dd.MM.yyyy, dddd");
 
         var active = TimeSpan.Zero;
         var inactive = TimeSpan.Zero;
+        var highFocus = TimeSpan.Zero;
+        var mediumFocus = TimeSpan.Zero;
         DateTime? firstActivityStart = null;
         DateTime? lastActivityEnd = null;
+
+        var thresholdMinutes = settingsService.Settings.HighFocusThresholdMinutes;
+        if (thresholdMinutes <= 0) thresholdMinutes = 60;
+        var highFocusThreshold = TimeSpan.FromMinutes(thresholdMinutes);
+        var highFocusWorkPercent = Math.Clamp(settingsService.Settings.HighFocusWorkPercent, 0, 100);
+        var mediumFocusWorkPercent = Math.Clamp(settingsService.Settings.MediumFocusWorkPercent, 0, 100);
 
         Sessions = new List<SessionDisplayItem>();
 
@@ -141,6 +306,10 @@ public class DaySummaryItem
             if (s.Type == SessionType.Activity)
             {
                 active += duration;
+                if (duration >= highFocusThreshold)
+                    highFocus += duration;
+                else
+                    mediumFocus += duration;
 
                 // Track first activity start
                 if (!firstActivityStart.HasValue || s.StartTime < firstActivityStart.Value)
@@ -162,6 +331,12 @@ public class DaySummaryItem
         ActiveTime = localizationService.FormatHoursMinutes(active);
         InactiveTime = localizationService.FormatHoursMinutes(inactive);
         TotalTime = localizationService.FormatHoursMinutes(active + inactive);
+
+        var effectiveSeconds =
+            (highFocus.TotalSeconds * highFocusWorkPercent / 100.0) +
+            (mediumFocus.TotalSeconds * mediumFocusWorkPercent / 100.0);
+        EffectiveWorkTime = localizationService.FormatHoursMinutes(TimeSpan.FromSeconds(effectiveSeconds));
+
         FirstActivityTime = firstActivityStart?.ToString("HH:mm") ?? "--:--";
         LastActivityTime = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
 

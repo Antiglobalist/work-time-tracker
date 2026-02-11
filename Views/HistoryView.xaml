@@ -14,52 +14,120 @@
 
         <!-- Days List -->
         <Border Grid.Column="0" Background="{StaticResource SidebarBrush}" Padding="0">
-            <ListBox ItemsSource="{Binding Days}" SelectedItem="{Binding SelectedDay}"
-                     Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryTextBrush}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="8,6">
-                            <TextBlock Text="{Binding DateText}" FontSize="13" FontWeight="SemiBold"
-                                       Foreground="{StaticResource PrimaryTextBrush}" />
-                            <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                                <TextBlock Text="{DynamicResource HistoryPcLabelShort}" FontSize="11"
-                                           Foreground="{StaticResource SecondaryTextBrush}" />
-                                <TextBlock Text="{Binding ActiveTime}" FontSize="11" Margin="6,0,0,0"
-                                           Foreground="{StaticResource AccentGreenBrush}" />
+            <DockPanel>
+                <!-- Filters panel at top -->
+                <StackPanel DockPanel.Dock="Top" Margin="8,8,8,4">
+                    <!-- Year and Month filters -->
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <ComboBox Grid.Column="0" ItemsSource="{Binding AvailableYears}"
+                                  SelectedItem="{Binding SelectedYear}"
+                                  MinWidth="70" Height="26" FontSize="12" />
+
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableMonths}"
+                                  SelectedItem="{Binding SelectedMonth}"
+                                  MinWidth="90" Height="26" FontSize="12" Margin="4,0,4,0" />
+
+                        <!-- Sort button -->
+                        <Button Grid.Column="2" Command="{Binding ToggleSortCommand}"
+                                Width="26" Height="26" Padding="0" Cursor="Hand"
+                                Background="{StaticResource CardBrush}" BorderThickness="0">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{StaticResource CardBrush}"
+                                                        CornerRadius="4" Padding="4">
+                                                    <TextBlock x:Name="SortIcon" Text="&#x2193;"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="{StaticResource PrimaryTextBrush}"
+                                                               HorizontalAlignment="Center"
+                                                               VerticalAlignment="Center" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding SortAscending}" Value="True">
+                                                        <Setter TargetName="SortIcon" Property="Text" Value="&#x2191;" />
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{DynamicResource SortDescTooltip}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SortAscending}" Value="True">
+                                                        <Setter Property="Text" Value="{DynamicResource SortAscTooltip}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Days list -->
+                <ListBox ItemsSource="{Binding Days}" SelectedItem="{Binding SelectedDay}"
+                         Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryTextBrush}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="8,6">
+                                <TextBlock Text="{Binding DateText}" FontSize="13" FontWeight="SemiBold"
+                                           Foreground="{StaticResource PrimaryTextBrush}" />
+                                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                    <TextBlock Text="{DynamicResource HistoryPcLabelShort}" FontSize="11"
+                                               Foreground="{StaticResource SecondaryTextBrush}" />
+                                    <TextBlock Text="{Binding EffectiveWorkTime}" FontSize="11" Margin="6,0,0,0"
+                                               Foreground="{StaticResource AccentGreenBrush}" />
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
-                        <Setter Property="Padding" Value="4" />
-                        <Setter Property="Cursor" Value="Hand" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                                            Padding="{TemplateBinding Padding}" CornerRadius="4"
-                                            Margin="4,1">
-                                        <ContentPresenter />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="Bd" Property="Background"
-                                                    Value="{StaticResource SelectedBrush}" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="Bd" Property="Background"
-                                                    Value="{StaticResource HoverBrush}" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
+                            <Setter Property="Padding" Value="4" />
+                            <Setter Property="Cursor" Value="Hand" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                                Padding="{TemplateBinding Padding}" CornerRadius="4"
+                                                Margin="4,1">
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd" Property="Background"
+                                                        Value="{StaticResource SelectedBrush}" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background"
+                                                        Value="{StaticResource HoverBrush}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </DockPanel>
         </Border>
 
         <!-- Day Detail Panel -->

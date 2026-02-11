@@ -44,7 +44,9 @@
     <sys:String x:Key="WorkDayStartLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Work day starts at:</sys:String>
     <sys:String x:Key="WorkDayStartDescription" xmlns:sys="clr-namespace:System;assembly=mscorlib">Times before this hour belong to the previous work day</sys:String>
 
-    <sys:String x:Key="HistoryPcLabelShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">At PC: </sys:String>
+    <sys:String x:Key="HistoryPcLabelShort" xmlns:sys="clr-namespace:System;assembly=mscorlib">Effective work time: </sys:String>
+    <sys:String x:Key="SortAscTooltip" xmlns:sys="clr-namespace:System;assembly=mscorlib">Oldest first</sys:String>
+    <sys:String x:Key="SortDescTooltip" xmlns:sys="clr-namespace:System;assembly=mscorlib">Newest first</sys:String>
     <sys:String x:Key="TotalForDayLabel" xmlns:sys="clr-namespace:System;assembly=mscorlib">Total for day: </sys:String>
     <sys:String x:Key="GitBranchesDay" xmlns:sys="clr-namespace:System;assembly=mscorlib">Git branches (day)</sys:String>
     <sys:String x:Key="FocusQualityTitle" xmlns:sys="clr-namespace:System;assembly=mscorlib">Focus quality</sys:String>
