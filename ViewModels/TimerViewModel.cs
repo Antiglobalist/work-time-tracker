@@ -172,7 +172,8 @@ public partial class TimerViewModel : ObservableObject, IDisposable
         LastActivityTime = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
 
         Sessions.Clear();
-        foreach (var s in sessions)
+        var mergedSessions = SessionMergeHelper.MergeConsecutiveSessions(sessions);
+        foreach (var s in mergedSessions)
         {
             Sessions.Add(new SessionDisplayItem(s, _localizationService));
         }

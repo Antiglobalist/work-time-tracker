@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using WorkTimeTracking.Helpers;
 using WorkTimeTracking.Models;
 using WorkTimeTracking.Services;
 
@@ -95,7 +96,11 @@ public partial class DayDetailViewModel : ObservableObject, IDisposable
             {
                 inactive += duration;
             }
+        }
 
+        var mergedSessions = SessionMergeHelper.MergeConsecutiveSessions(sessions);
+        foreach (var s in mergedSessions)
+        {
             Sessions.Add(new SessionDisplayItem(s, _localizationService));
         }
 

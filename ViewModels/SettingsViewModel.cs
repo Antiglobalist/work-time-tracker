@@ -302,6 +302,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
         BuildHighFocusThresholdOptions();
         BuildFocusEfficiencyOptions();
         BuildWorkGoalOptions();
+        LoadSettings();
     }
 
     public void Dispose()
@@ -339,3 +340,4 @@ public record WorkGoalOption(int Minutes, string Label)
 {
     public override string ToString() => Label;
 }
+  

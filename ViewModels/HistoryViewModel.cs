@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using WorkTimeTracking.Helpers;
 using WorkTimeTracking.Models;
 using WorkTimeTracking.Services;
 
@@ -19,6 +20,8 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
 
     private List<DaySummaryItem> _allDays = new();
     private bool _isUpdatingFilters;
+    private int? _savedYearValue;
+    private int? _savedMonthValue;
 
     public ObservableCollection<DaySummaryItem> Days { get; } = new();
 
@@ -56,6 +59,8 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
     private void LoadDays()
     {
         var selectedDate = SelectedDay?.Date;
+        _savedYearValue = SelectedYear;
+        _savedMonthValue = GetMonthNumberFromName(SelectedMonth);
 
         _allDays.Clear();
         var dates = _sessionRepository.GetAllDatesWithSessions();
@@ -66,7 +71,10 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
             _allDays.Add(new DaySummaryItem(date, sessions, gitSessions, _localizationService, _settingsService));
         }
 
-        UpdateAvailableFilters();
+        _isUpdatingFilters = true;
+        RebuildFilters();
+        _isUpdatingFilters = false;
+
         ApplyFilter();
 
         if (Days.Count == 0)
@@ -85,65 +93,60 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         }
     }
 
-    private void UpdateAvailableFilters()
+    private void RebuildFilters()
     {
-        _isUpdatingFilters = true;
-
-        var previousYear = SelectedYear;
-        var previousMonth = SelectedMonth;
-
         var years = _allDays.Select(d => d.Date.Year).Distinct().OrderByDescending(y => y).ToList();
-        AvailableYears.Clear();
-        foreach (var y in years)
-            AvailableYears.Add(y);
+        SyncCollection(AvailableYears, years);
 
-        if (previousYear.HasValue && AvailableYears.Contains(previousYear.Value))
-            SelectedYear = previousYear.Value;
+        if (_savedYearValue.HasValue && AvailableYears.Contains(_savedYearValue.Value))
+            SelectedYear = _savedYearValue.Value;
         else if (AvailableYears.Count > 0)
             SelectedYear = AvailableYears[0];
         else
             SelectedYear = null;
 
-        UpdateAvailableMonths();
-
-        if (previousMonth != null && AvailableMonths.Contains(previousMonth))
-            SelectedMonth = previousMonth;
-        else if (AvailableMonths.Count > 0)
-            SelectedMonth = AvailableMonths[0];
-        else
-            SelectedMonth = null;
-
-        _isUpdatingFilters = false;
+        RebuildMonths();
     }
 
-    private void UpdateAvailableMonths()
+    private void RebuildMonths()
     {
-        var previousMonth = SelectedMonth;
-        AvailableMonths.Clear();
-
         if (!SelectedYear.HasValue)
+        {
+            if (AvailableMonths.Count > 0) AvailableMonths.Clear();
+            SelectedMonth = null;
             return;
+        }
 
-        var months = _allDays
+        var monthNames = _allDays
             .Where(d => d.Date.Year == SelectedYear.Value)
             .Select(d => d.Date.Month)
             .Distinct()
             .OrderByDescending(m => m)
+            .Select(m =>
+            {
+                var name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m);
+                return char.ToUpper(name[0]) + name.Substring(1);
+            })
             .ToList();
 
-        foreach (var m in months)
-        {
-            var name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m);
-            name = char.ToUpper(name[0]) + name.Substring(1);
-            AvailableMonths.Add(name);
-        }
+        SyncCollection(AvailableMonths, monthNames);
 
-        if (previousMonth != null && AvailableMonths.Contains(previousMonth))
-            SelectedMonth = previousMonth;
+        var savedMonthName = _savedMonthValue.HasValue ? GetMonthNameFromNumber(_savedMonthValue.Value) : null;
+        if (savedMonthName != null && AvailableMonths.Contains(savedMonthName))
+            SelectedMonth = savedMonthName;
         else if (AvailableMonths.Count > 0)
             SelectedMonth = AvailableMonths[0];
         else
             SelectedMonth = null;
+    }
+
+    private static void SyncCollection<T>(ObservableCollection<T> target, List<T> source)
+    {
+        if (target.Count == source.Count && target.SequenceEqual(source))
+            return;
+        target.Clear();
+        foreach (var item in source)
+            target.Add(item);
     }
 
     private int? GetMonthNumberFromName(string? monthName)
@@ -159,6 +162,13 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
                 return i;
         }
         return null;
+    }
+
+    private string? GetMonthNameFromNumber(int month)
+    {
+        if (month < 1 || month > 12) return null;
+        var name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+        return char.ToUpper(name[0]) + name.Substring(1);
     }
 
     private void ApplyFilter()
@@ -199,7 +209,8 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         if (_isUpdatingFilters) return;
 
         _isUpdatingFilters = true;
-        UpdateAvailableMonths();
+        _savedMonthValue = GetMonthNumberFromName(SelectedMonth);
+        RebuildMonths();
         _isUpdatingFilters = false;
 
         ApplyFilter();
@@ -324,7 +335,11 @@ public class DaySummaryItem
             {
                 inactive += duration;
             }
+        }
 
+        var mergedSessions = SessionMergeHelper.MergeConsecutiveSessions(sessions);
+        foreach (var s in mergedSessions)
+        {
             Sessions.Add(new SessionDisplayItem(s, localizationService));
         }
 
