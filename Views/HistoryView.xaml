@@ -78,6 +78,13 @@
                             </Button.ToolTip>
                         </Button>
                     </Grid>
+                    <!-- Monthly effective work total -->
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="{DynamicResource MonthlyEffectiveTotalLabel}" FontSize="12"
+                                   Foreground="{StaticResource SecondaryTextBrush}" />
+                        <TextBlock Text="{Binding MonthlyEffectiveWorkTime}" FontSize="12"
+                                   Foreground="{StaticResource AccentGreenBrush}" FontWeight="SemiBold" />
+                    </StackPanel>
                 </StackPanel>
 
                 <!-- Days list -->

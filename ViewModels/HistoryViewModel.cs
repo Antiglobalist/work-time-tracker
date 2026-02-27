@@ -40,6 +40,9 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private bool _sortAscending;
 
+    [ObservableProperty]
+    private string _monthlyEffectiveWorkTime = "";
+
     public HistoryViewModel(SessionRepository sessionRepository, INavigationService navigationService, ILocalizationService localizationService, ISettingsService settingsService)
     {
         _sessionRepository = sessionRepository;
@@ -192,6 +195,9 @@ public partial class HistoryViewModel : ObservableObject, IDisposable
         foreach (var day in sorted)
             Days.Add(day);
 
+        var monthlyTotal = Days.Aggregate(TimeSpan.Zero, (acc, d) => acc + d.EffectiveWorkTimeRaw);
+        MonthlyEffectiveWorkTime = _localizationService.FormatHoursMinutes(monthlyTotal);
+
         if (Days.Count == 0)
         {
             SelectedDay = null;
@@ -283,6 +289,7 @@ public class DaySummaryItem
     public string InactiveTime { get; }
     public string TotalTime { get; }
     public string EffectiveWorkTime { get; }
+    public TimeSpan EffectiveWorkTimeRaw { get; }
     public string FirstActivityTime { get; }
     public string LastActivityTime { get; }
     public List<SessionDisplayItem> Sessions { get; }
@@ -350,7 +357,8 @@ public class DaySummaryItem
         var effectiveSeconds =
             (highFocus.TotalSeconds * highFocusWorkPercent / 100.0) +
             (mediumFocus.TotalSeconds * mediumFocusWorkPercent / 100.0);
-        EffectiveWorkTime = localizationService.FormatHoursMinutes(TimeSpan.FromSeconds(effectiveSeconds));
+        EffectiveWorkTimeRaw = TimeSpan.FromSeconds(effectiveSeconds);
+        EffectiveWorkTime = localizationService.FormatHoursMinutes(EffectiveWorkTimeRaw);
 
         FirstActivityTime = firstActivityStart?.ToString("HH:mm") ?? "--:--";
         LastActivityTime = lastActivityEnd?.ToString("HH:mm") ?? "--:--";
