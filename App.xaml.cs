@@ -24,6 +24,11 @@ public partial class App : Application
     private ILocalizationService? _localizationService;
     private bool _isExiting;
     private MainWindow? _mainWindow;
+    private Mutex? _singleInstanceMutex;
+    private EventWaitHandle? _showWindowEvent;
+    private RegisteredWaitHandle? _showWindowWait;
+    private const string SingleInstanceMutexName = @"Local\WorkTimeTracking.SingleInstance";
+    private const string ShowWindowEventName = @"Local\WorkTimeTracking.ShowWindow";
     private static readonly string StartupLogPath =
         Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "WorkTimeTracking", "startup.log");
@@ -32,6 +37,13 @@ public partial class App : Application
     {
         base.OnStartup(e);
         LogStartup("OnStartup begin");
+
+        if (!TryAcquireSingleInstance())
+        {
+            LogStartup("Another instance is running, exiting");
+            Shutdown();
+            return;
+        }
 
         DispatcherUnhandledException += (_, args) =>
         {
@@ -101,11 +113,41 @@ public partial class App : Application
         }
     }
 
+    private bool TryAcquireSingleInstance()
+    {
+        _singleInstanceMutex = new Mutex(true, SingleInstanceMutexName, out var createdNew);
+        if (!createdNew)
+        {
+            _singleInstanceMutex.Dispose();
+            _singleInstanceMutex = null;
+            try
+            {
+                using var showEvent = EventWaitHandle.OpenExisting(ShowWindowEventName);
+                showEvent.Set();
+            }
+            catch
+            {
+                // first instance is still starting up
+            }
+            return false;
+        }
+
+        _showWindowEvent = new EventWaitHandle(false, EventResetMode.AutoReset, ShowWindowEventName);
+        _showWindowWait = ThreadPool.RegisterWaitForSingleObject(
+            _showWindowEvent,
+            (_, _) => Dispatcher.BeginInvoke(new Action(ShowMainWindow)),
+            null,
+            Timeout.Infinite,
+            executeOnlyOnce: false);
+        return true;
+    }
+
     private static void ConfigureServices(ServiceCollection services)
     {
         // Data
-        services.AddTransient<AppDbContext>();
-        services.AddSingleton<Func<AppDbContext>>(sp => () => sp.GetRequiredService<AppDbContext>());
+        // Disposable transients resolved from the root provider stay referenced until exit,
+        // so every query leaked a DbContext. Create contexts directly instead.
+        services.AddSingleton<Func<AppDbContext>>(_ => () => new AppDbContext());
         services.AddSingleton<SessionRepository>();
 
         // Services
@@ -237,6 +279,15 @@ public partial class App : Application
         _trayIcon?.Dispose();
         if (_localizationService != null)
             _localizationService.LanguageChanged -= UpdateLocalizedUi;
+        (_services as IDisposable)?.Dispose();
+
+        _showWindowWait?.Unregister(null);
+        _showWindowEvent?.Dispose();
+        if (_singleInstanceMutex != null)
+        {
+            _singleInstanceMutex.ReleaseMutex();
+            _singleInstanceMutex.Dispose();
+        }
 
         base.OnExit(e);
     }

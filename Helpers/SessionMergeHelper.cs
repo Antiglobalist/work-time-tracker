@@ -19,7 +19,6 @@ public static class SessionMergeHelper
 
         var merged = new List<Session>();
         Session? currentMerged = null;
-        int mergeCount = 0;
 
         foreach (var session in sessions)
         {
@@ -35,7 +34,6 @@ public static class SessionMergeHelper
             {
                 // Extend the end time of the merged session
                 currentMerged.EndTime = session.EndTime;
-                mergeCount++;
             }
             else
             {
@@ -51,18 +49,32 @@ public static class SessionMergeHelper
             merged.Add(currentMerged);
         }
 
-        // Log to file for debugging
-        try
-        {
-            var logPath = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "WorkTimeTracking", "merge.log");
-            var logMsg = $"{DateTime.Now:HH:mm:ss} - Input: {sessions.Count} sessions -> Output: {merged.Count} merged ({mergeCount} merges)\n";
-            System.IO.File.AppendAllText(logPath, logMsg);
-        }
-        catch { }
-
         return merged;
+    }
+
+    /// <summary>
+    /// Clips sessions so that every moment is counted once (sessions sorted by StartTime).
+    /// </summary>
+    public static List<Session> TrimOverlaps(List<Session> sessions)
+    {
+        // Several running app instances used to write parallel sessions for the same time.
+        var result = new List<Session>(sessions.Count);
+        var coveredUntil = DateTime.MinValue;
+
+        foreach (var session in sessions)
+        {
+            var end = session.EndTime ?? DateTime.MaxValue;
+            if (end <= coveredUntil)
+                continue;
+
+            if (session.StartTime < coveredUntil)
+                session.StartTime = coveredUntil;
+
+            result.Add(session);
+            coveredUntil = end;
+        }
+
+        return result;
     }
 
     /// <summary>

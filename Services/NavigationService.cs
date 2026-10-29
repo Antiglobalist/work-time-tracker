@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace WorkTimeTracking.Services;
 
-public class NavigationService : INavigationService
+public class NavigationService : INavigationService, IDisposable
 {
     private readonly IServiceProvider _serviceProvider;
     private ObservableObject _currentView = null!;
@@ -30,7 +30,18 @@ public class NavigationService : INavigationService
         if (_currentView is IDisposable disposable)
             disposable.Dispose();
 
-        var viewModel = _serviceProvider.GetRequiredService<TViewModel>();
+        // Do not resolve disposable transient view models from the root provider:
+        // it tracks them until the application exits, even after navigation away.
+        var viewModel = ActivatorUtilities.CreateInstance<TViewModel>(_serviceProvider);
         CurrentView = viewModel;
+    }
+
+    public void Dispose()
+    {
+        if (_currentView is IDisposable disposable)
+            disposable.Dispose();
+
+        _currentView = null!;
+        CurrentViewChanged = null;
     }
 }

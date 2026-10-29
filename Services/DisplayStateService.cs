@@ -52,8 +52,16 @@ public sealed class DisplayStateService : IDisposable
         if (PowerGetActiveScheme(IntPtr.Zero, out var pScheme) != 0 || pScheme == IntPtr.Zero)
             return 0;
 
-        var scheme = Marshal.PtrToStructure<Guid>(pScheme);
-        Marshal.FreeHGlobal(pScheme);
+        Guid scheme;
+        try
+        {
+            scheme = Marshal.PtrToStructure<Guid>(pScheme);
+        }
+        finally
+        {
+            // PowerGetActiveScheme allocates with LocalAlloc, not CoTaskMemAlloc.
+            LocalFree(pScheme);
+        }
 
         var onAc = IsOnAcPower();
         uint seconds;
@@ -143,4 +151,7 @@ public sealed class DisplayStateService : IDisposable
 
     [DllImport("kernel32.dll")]
     private static extern bool GetSystemPowerStatus(out SYSTEM_POWER_STATUS status);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    private static extern IntPtr LocalFree(IntPtr hMem);
 }

@@ -67,11 +67,12 @@ public class SessionRepository
         // Work day starts at configured hour, not midnight
         var start = workDayDate.Date.AddHours(WorkDayHelper.WorkDayStartHour);
         var end = start.AddDays(1);
-        return ctx.Sessions
+        var sessions = ctx.Sessions
             .Where(s => s.StartTime >= start && s.StartTime < end)
             .OrderBy(s => s.StartTime)
             .AsNoTracking()
             .ToList();
+        return SessionMergeHelper.TrimOverlaps(sessions);
     }
 
     public List<DateTime> GetAllDatesWithSessions()
